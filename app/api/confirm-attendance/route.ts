@@ -4,14 +4,27 @@ interface AttendanceData {
   name: string;
   email: string;
   phone: string;
-  dietary: string;
-  guests: number;
-  message: string;
+  dietary?: string;
+  guests?: number;
+  message?: string;
   attending: 'yes' | 'no';
+  emoji?: string;
+}
+
+// Function to escape Telegram Markdown
+function escapeMarkdown(text: string) {
+  return text.replace(/([_*[\]()~`>#+\-=|{}.!])/g, '\\$1');
 }
 
 export async function POST(request: NextRequest) {
   try {
+    if (request.headers.get('content-type') !== 'application/json') {
+      return NextResponse.json(
+        { error: 'Content-Type must be application/json' },
+        { status: 400 }
+      );
+    }
+
     const data: AttendanceData = await request.json();
 
     // Validate required fields
@@ -31,25 +44,47 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Here you would typically:
-    // 1. Save to database
-    // 2. Send email via EmailJS or another service
-    // 3. Send confirmation email to guest
-    // 4. Notify wedding organizers
+    // Check Telegram env variables
+    const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+    const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
-    console.log('Guest attendance recorded:', {
-      name: data.name,
-      email: data.email,
-      attending: data.attending,
-      guests: data.guests,
-      dietary: data.dietary,
-      timestamp: new Date().toISOString(),
-    });
+    if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
+      const message = `🎉 *New RSVP Received!*\n\n` +
+        `👤 *Name:* ${escapeMarkdown(data.name)}\n` +
+        `📧 *Email:* ${escapeMarkdown(data.email)}\n` +
+        `📱 *Phone:* ${escapeMarkdown(data.phone)}\n` +
+        `✅ *Attending:* ${escapeMarkdown(data.attending)}\n` +
+        `👥 *Additional Guests:* ${data.guests ?? 0}\n` +
+        `🍽️ *Dietary Restrictions:* ${escapeMarkdown(data.dietary || 'None')}\n` +
+        `💬 *Message:* ${escapeMarkdown(data.message || 'No message')}\n` +
+        `${data.emoji ? `😊 *Emoji:* ${escapeMarkdown(data.emoji)}` : ''}`;
 
-    // Simulate processing
-    await new Promise(resolve => setTimeout(resolve, 500));
+      try {
+        const telegramResponse = await fetch(
+          `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              chat_id: TELEGRAM_CHAT_ID,
+              text: message,
+              parse_mode: "MarkdownV2", // Use MarkdownV2 and escape text
+            }),
+          }
+        );
 
-    // Return success response
+        if (!telegramResponse.ok) {
+          console.error('Failed to send Telegram message:', await telegramResponse.text());
+        }
+      } catch (telegramError) {
+        console.error('Error sending Telegram notification:', telegramError);
+      }
+    } else {
+      console.warn('Telegram env variables missing. Skipping notification.');
+    }
+
+    console.log('Guest attendance recorded:', data);
+
     return NextResponse.json(
       {
         success: true,
@@ -57,7 +92,7 @@ export async function POST(request: NextRequest) {
         data: {
           name: data.name,
           attending: data.attending,
-          guests: data.guests,
+          guests: data.guests ?? 0,
         },
       },
       { status: 200 }
@@ -70,9 +105,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
-// Optional: GET endpoint for health check
-export async function GET() {
-  return NextResponse.json({ status: 'API is running' });
-}
-

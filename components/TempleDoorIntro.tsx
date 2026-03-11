@@ -63,6 +63,7 @@ export default function TempleDoorIntro({
               alt="Couple"
               width={220}
               height={30}
+              loading="eager"
               className="rounded-2xl border-2 border-[#D4AF37]"
             />
           </div>

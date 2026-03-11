@@ -62,7 +62,8 @@ export default function TempleDoorIntro({
               src="/Couples_1.png"
               alt="Couple"
               width={220}
-              height={300}
+              height={30}
+              loading="eager"
               className="rounded-2xl border-2 border-[#D4AF37]"
             />
           </div>
@@ -86,7 +87,7 @@ export default function TempleDoorIntro({
         initial={{ x: 0 }}
         animate={{ x: open ? "-90%" : 0 }}
         transition={{ duration: 1.5, ease: "easeInOut" }}
-        className="absolute left-1/2 top-0 bottom-0 w-[50vw] max-w-[250px] -translate-x-full z-20"
+        className="absolute left-1/2 top-0 bottom-0 w-[50vw] max-w-[250px] -translate-x-full z-20 rounded-4xl overflow-hidden"
       >
         <Image
           src="/temple_door_left.png"
@@ -102,7 +103,7 @@ export default function TempleDoorIntro({
         initial={{ x: 0 }}
         animate={{ x: open ? "90%" : 0 }}
         transition={{ duration: 1.5, ease: "easeInOut" }}
-        className="absolute left-1/2 top-0 bottom-0 w-[50vw] max-w-[250px] z-20"
+        className="absolute left-1/2 top-0 bottom-0 w-[50vw] max-w-[250px] z-20 rounded-4xl overflow-hidden"
       >
         <Image
           src="/temple_door_right.png"

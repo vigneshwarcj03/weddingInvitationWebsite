@@ -5,6 +5,7 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
+    qualities: [75, 90], // add the qualities you want
   },
   turbopack: {
     root: process.cwd(),

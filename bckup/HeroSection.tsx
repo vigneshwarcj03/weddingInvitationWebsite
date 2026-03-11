@@ -60,7 +60,7 @@ export default function HeroSection({ guestName }: HeroSectionProps) {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-5xl md:text-7xl font-heading font-semibold text-primary tracking-tight"
+          className="text-5xl md:text-7xl font-[Poppins] font-light tracking-widest leading-[1.2] bg-gradient-to-r from-rose-400 to-amber-400 bg-clip-text text-transparent"
         >
           Vijay & Trisha
         </motion.h1>
