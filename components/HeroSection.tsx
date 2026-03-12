@@ -125,7 +125,7 @@ export default function HeroSection({ guestName }: HeroSectionProps) {
         {/* Date & Location */}
         <div className="space-y-2 pt-3">
           <p className="text-sm md:text-base uppercase tracking-[0.25em] text-primary font-cinzel">
-            Saturday • March 15 • 2026
+            Saturday • May 15 • 2026
           </p>
 
           <p className="text-sm md:text-base uppercase tracking-[0.25em] text-primary font-cinzel">

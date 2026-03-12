@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 interface TempleDoorIntroProps {
@@ -15,6 +15,9 @@ export default function TempleDoorIntro({
 }: TempleDoorIntroProps) {
   const [open, setOpen] = useState(false);
 
+  // This is the audio reference
+  const audioRef = useRef<HTMLAudioElement>(null);
+
   useEffect(() => {
     const timer = setTimeout(() => setOpen(true), 900);
     return () => clearTimeout(timer);
@@ -22,6 +25,14 @@ export default function TempleDoorIntro({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center overflow-hidden z-50">
+      <audio
+        ref={audioRef}
+        src="/music/wedding-theme.mp3"
+        loop
+        autoPlay={false}
+        muted={false}
+      />
+
       {/* Background */}
       <Image
         src="/Background_Temple_image.png"
@@ -69,7 +80,17 @@ export default function TempleDoorIntro({
           </div>
 
           <motion.button
-            onClick={onOpen}
+            onClick={() => {
+              const audio = document.querySelector<HTMLAudioElement>("audio");
+              if (audio) {
+                audio.muted = false;
+                audio.volume = 1;
+                audio
+                  .play()
+                  .catch((err) => console.warn("Audio play blocked:", err));
+              }
+              onOpen(); // open the doors
+            }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="px-8 py-3 rounded-full text-white font-semibold"

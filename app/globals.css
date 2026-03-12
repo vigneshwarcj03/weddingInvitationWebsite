@@ -359,6 +359,9 @@
   /* Smooth scrolling */
   html {
     scroll-behavior: smooth;
+    /* Enable native momentum scrolling on iOS and other WebKit/Blink mobile browsers */
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
   }
 
   /* Prevent layout shift on scrollbar */
@@ -374,6 +377,10 @@
       min-height: 44px;
       min-width: 44px;
     }
+  }
+
+  .fullscreen {
+    height: calc(var(--vh, 1vh) * 100);
   }
 
   /* Print styles */

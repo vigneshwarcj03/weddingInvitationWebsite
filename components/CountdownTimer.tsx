@@ -15,7 +15,7 @@ interface CountdownTimerProps {
 }
 
 export default function CountdownTimer({
-  target = "2026-03-15T17:00:00+05:30",
+  target = "2026-05-15T17:00:00+05:30",
 }: CountdownTimerProps) {
   const [timeRemaining, setTimeRemaining] = useState<TimeRemaining>({
     days: 0,
@@ -137,7 +137,7 @@ export default function CountdownTimer({
           </h2>
 
           <p className="text-lg text-foreground tracking-wide">
-            15th March, 2026 | 5:00 PM IST
+            15th May, 2026 | 5:00 PM IST
           </p>
 
           <div className="mt-6 flex items-center justify-center gap-3">

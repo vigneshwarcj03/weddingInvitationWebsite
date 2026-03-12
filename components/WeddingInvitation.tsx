@@ -29,13 +29,25 @@ export default function WeddingInvitation({
   } = useInvitation(guestName);
 
   useEffect(() => {
+    const setVh = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
+    };
+
+    setVh();
+    window.addEventListener("resize", setVh);
+
+    return () => window.removeEventListener("resize", setVh);
+  }, []);
+
+  useEffect(() => {
     if (guestName && guestName !== currentGuest) {
       updateGuestName(guestName);
     }
   }, [guestName, currentGuest, updateGuestName]);
 
   if (isConfirmed) {
-    return <CelebrationScreen guestName={currentGuest} />;
+    return <CelebrationScreen />;
   }
 
   if (showDoorIntro) {
@@ -43,7 +55,7 @@ export default function WeddingInvitation({
   }
 
   return (
-    <div className="min-h-screen bg-background overflow-hidden relative">
+    <div className="min-h-[calc(var(--vh)*100)] bg-background overflow-auto relative">
       <FallingFlowers />
 
       <main className="relative z-10">

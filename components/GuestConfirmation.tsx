@@ -12,15 +12,25 @@ interface FormData {
   message: string;
 }
 
-export default function QuickGuestConfirmation() {
+interface GuestConfirmationProps {
+  guestName: string;
+  onConfirmation: () => void;
+}
+
+export default function GuestConfirmation({
+  guestName,
+  onConfirmation,
+}: GuestConfirmationProps) {
   const { register, handleSubmit, reset } = useForm<FormData>();
   const [sending, setSending] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [hasNavigated, setHasNavigated] = useState(false);
   const router = useRouter();
 
   const WHATSAPP_NUMBER = "+1234567890"; // Replace with your WhatsApp number in international format
 
   const onSubmit = async (data: FormData) => {
+    if (sending || hasNavigated) return;
     setSending(true);
 
     try {
@@ -47,11 +57,12 @@ export default function QuickGuestConfirmation() {
 
       if (response.ok && result.success) {
         setSuccess(true);
+        onConfirmation();
 
+        // Reset form after a short delay; navigation is now handled by state change
         setTimeout(() => {
           reset();
           setSending(false);
-          router.push(`/celebration?name=${encodeURIComponent(data.name)}`);
         }, 1800);
       } else {
         console.error("Error submitting RSVP:", result.error);

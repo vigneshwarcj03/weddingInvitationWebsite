@@ -83,9 +83,7 @@ export default function WeddingDetails() {
                   <div className="space-y-4">
                     <div className="flex items-center justify-center gap-3 text-foreground">
                       <Calendar className="w-5 h-5 text-primary" />
-                      <span className="text-lg font-light">
-                        March 15th, 2026
-                      </span>
+                      <span className="text-lg font-light">May 15th, 2026</span>
                     </div>
                     <div className="flex items-center justify-center gap-3 text-foreground">
                       <Clock className="w-5 h-5 text-primary" />
@@ -146,9 +144,7 @@ export default function WeddingDetails() {
                   <div className="space-y-4">
                     <div className="flex items-center justify-center gap-3 text-foreground">
                       <Calendar className="w-5 h-5 text-primary" />
-                      <span className="text-lg font-light">
-                        March 16th, 2026
-                      </span>
+                      <span className="text-lg font-light">May 16th, 2026</span>
                     </div>
                     <div className="flex items-center justify-center gap-3 text-foreground">
                       <Clock className="w-5 h-5 text-primary" />
