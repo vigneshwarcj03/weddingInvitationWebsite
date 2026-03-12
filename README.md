@@ -1,6 +1,9 @@
-# Vijay & Trisha – Digital Wedding Invitation
+# Digital Wedding Invitation Template
 
-> A premium, fully responsive, feature-rich digital wedding invitation website built with Next.js 16, React 19, and modern web technologies
+> A fully responsive, interactive digital wedding invitation built with
+> Next.js App Router (v16) and modern React tooling. This repository serves
+> as a customizable template for creating elegant wedding sites with
+> RSVP, galleries, animations and more.
 
 [![Next.js](https://img.shields.io/badge/Next.js-16.1.6-black)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19.2.4-61DAFB)](https://react.dev/)
@@ -8,202 +11,143 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.2.0-38B2AC)](https://tailwindcss.com/)
 [![Framer Motion](https://img.shields.io/badge/Framer_Motion-11.18.2-0055FF)](https://www.framer.com/motion/)
 
-## 📖 Overview
+## 🚀 Overview
 
-A beautiful, modern digital wedding invitation website for Vijay & Trisha's wedding. This project showcases a complete, interactive experience designed to engage guests with personalized greetings, animated countdown timers, photo galleries, RSVP functionality, and celebratory animations. Built with cutting-edge web technologies, the site delivers a seamless experience across all devices.
+This project demonstrates a modern digital wedding invitation suitable for
+couples looking to send interactive, mobile-friendly invites. The sample
+site is configured for Vijay & Trisha's wedding (March 15, 2026) but can
+be adapted for any event. Features include personalized greetings,
+animated countdowns, photo galleries, RSVP forms, and celebratory effects.
 
----
-
-## 🎯 Key Features
-
-### Visual & Animation Features
-
-- **Temple Door Opening Animation** – Elegant animated door intro with Framer Motion
-- **Falling Flowers Background** – Continuous animated floral effects throughout the invitation
-- **Countdown Timer** – Dynamic, animated countdown to the wedding date (March 15, 2026)
-- **Celebration Screen** – Confetti and celebratory animations on successful RSVP
-
-### Interactive Components
-
-- **Personalized Greetings** – Guest names via query parameters (`?guest=Name`)
-- **Photo Gallery** – Lightbox photo gallery with smooth transitions
-- **RSVP Form** – Client-side validated form with multiple input fields
-- **Guest Confirmation** – Detailed attendance confirmation capture
-- **Wedding Details Section** – Venue information, date, and logistics
-
-### Design & Accessibility
-
-- **Mobile-First Responsive Design** – Optimized for all screen sizes
-- **Dark & Light Themes** – Customizable color palettes with theme switching
-- **Premium Typography** – Carefully selected fonts (Playfair Display, Cinzel, Great Vibes)
-- **Accessible UI Components** – Built on shadcn/ui based on Radix UI primitives
-- **WCAG Compliant** – Keyboard navigation and screen reader support
-
-### Backend & Integration
-
-- **API Routes** – Next.js API endpoint for attendance confirmations (`/api/confirm-attendance`)
-- **Form Validation** – Server-side and client-side validation for data integrity
-- **EmailJS Integration** – Optional email notifications for confirmations
-- **Analytics** – Vercel Analytics integration for tracking engagement
-- **PDF Export** – HTML to PDF conversion capability
+Guests access the site with `?guest=Name` to see a tailored message, RSVP
+through a custom form, and enjoy animations like temple doors, falling
+flowers, and confetti.
 
 ---
 
-## 🛠 Tech Stack
+## ✨ Key Features
 
-### Frontend Framework & Language
+- **Animated Intro** – Temple door opening using Framer Motion.
+- **Background Effects** – Continuous falling flowers animation.
+- **Countdown Timer** – Live countdown to the wedding date.
+- **Personalization** – Query parameter support for guest names.
+- **Gallery** – Lightbox carousel of photos.
+- **RSVP & Confirmation** – Form with validation, API route, and optional
+  email notification.
+- **Celebration Screen** – Confetti and thank‑you message post‑RSVP.
+- **Responsive & Accessible** – Mobile-first design with WCAG-friendly
+  components using shadcn/ui (Radix primitives).
+- **Dark/Light themes** – Toggleable color schemes via `next-themes`.
+- **PDF Export** – Export invite as PDF using `html2pdf.js`.
+- **Analytics** – Vercel Analytics integration.
 
-| Feature   | Technology         | Version |
-| --------- | ------------------ | ------- |
-| Framework | Next.js App Router | 16.1.6  |
-| Runtime   | React              | 19.2.4  |
-| Language  | TypeScript         | 5.7.3   |
+---
 
-### Styling & Animations
+## 🛠️ Tech Stack
 
-| Feature       | Technology           | Version |
-| ------------- | -------------------- | ------- |
-| CSS Framework | Tailwind CSS         | 4.2.0   |
-| Animations    | Framer Motion        | 11.0.0  |
-| CSS Processor | PostCSS/Autoprefixer | Latest  |
-
-### UI Components & Forms
-
-| Feature       | Technology           | Version |
-| ------------- | -------------------- | ------- |
-| Component Lib | shadcn/ui (Radix UI) | Latest  |
-| Icons         | Lucide React         | 0.564.0 |
-| Form Library  | React Hook Form      | 7.54.1  |
-| Form Schema   | Zod                  | 3.24.1  |
-
-### Additional Libraries
-
-| Purpose            | Package              | Version |
-| ------------------ | -------------------- | ------- |
-| Notifications      | Sonner               | 1.7.1   |
-| Date Utilities     | date-fns             | 4.1.0   |
-| Class Merging      | clsx, tailwind-merge | Latest  |
-| Carousel/Embla     | Embla Carousel React | 8.6.0   |
-| Charts             | Recharts             | 2.15.0  |
-| Email Integration  | emailjs-com          | 3.2.0   |
-| PDF Export         | html2pdf.js          | 0.10.1  |
-| Analytics          | @vercel/analytics    | 1.6.1   |
-| OTP Input          | input-otp            | 1.4.2   |
-| Night Mode Support | next-themes          | 0.4.6   |
+- **Next.js 16 (App Router)**
+- **React 19 + TypeScript 5**
+- **Tailwind CSS 4** with PostCSS
+- **Framer Motion** for animations
+- **shadcn/ui** (Radix UI) component library
+- **Zod + React Hook Form** for validation
+- Additional libs: `sonner`, `embla-carousel-react`, `recharts`, `emailjs-com`,
+  `@vercel/analytics`, `html2pdf.js`, `date-fns`, etc.
 
 ---
 
 ## 📁 Project Structure
 
 ```
-├── app/                          # Next.js App Router
-│   ├── layout.tsx               # Root layout with theme provider
-│   ├── page.tsx                 # Home page with guest param handling
-│   ├── globals.css              # Global styles with luxury color palette
-│   ├── api/
-│   │   └── confirm-attendance/  # RSVP API endpoint
-│   │       └── route.ts
-│   └── celebration/             # Celebration page route
-│       └── page.tsx
-├── components/                   # Reusable React components
-│   ├── WeddingInvitation.tsx     # Main invitation component
-│   ├── TempleDoorIntro.tsx       # Temple door opening animation
-│   ├── HeroSection.tsx           # Hero banner with personalization
-│   ├── CountdownTimer.tsx        # Wedding countdown display (March 15, 2026)
-│   ├── WeddingDetails.tsx        # Venue & logistics information
-│   ├── Gallery.tsx               # Photo gallery with lightbox
-│   ├── GuestConfirmation.tsx     # RSVP form component
-│   ├── CelebrationScreen.tsx     # Post-RSVP celebration view
-│   ├── FallingFlowers.tsx        # Background animation effect
-│   ├── LoadingScreen.tsx         # Loading state UI
-│   ├── theme-provider.tsx        # Theme context provider
-│   └── ui/                       # shadcn/ui component library
-│       ├── button.tsx, input.tsx, form.tsx, etc.
-│       └── ...27+ pre-built UI components
-├── hooks/                        # Custom React hooks
-│   ├── useInvitation.ts         # Main invitation state management
-│   ├── use-toast.ts             # Toast notification hook
-│   └── use-mobile.ts            # Mobile breakpoint detection
-├── lib/                          # Utility functions
-│   └── utils.ts                 # Class merging and helpers
-├── public/                       # Static assets
-│   ├── Background_Temple_image.png
-│   ├── Couples_1.png
-│   ├── journey1.jpg - journey6.jpg
-│   ├── Reception.jpg
-│   ├── temple_door_left.png & temple_door_right.png
-│   ├── Wedding Ceremony.jpg
-│   └── other assets (icons, borders, placeholders)
-├── styles/                       # Global stylesheets
-│   └── globals.css
-├── bckup/                        # Backup components
-├── components.json              # shadcn/ui configuration
-├── package.json                 # Dependencies & scripts
-├── next.config.mjs              # Next.js configuration
-├── tailwind.config.js           # Tailwind CSS customization
-├── postcss.config.mjs           # PostCSS plugins
-├── tsconfig.json                # TypeScript configuration
-└── README.md                    # This file
+app/
+  layout.tsx
+  page.tsx
+  globals.css
+  api/confirm-attendance/route.ts
+  celebration/page.tsx
+components/
+  WeddingInvitation.tsx
+  TempleDoorIntro.tsx
+  HeroSection.tsx
+  CountdownTimer.tsx
+  WeddingDetails.tsx
+  Gallery.tsx
+  GuestConfirmation.tsx
+  CelebrationScreen.tsx
+  FallingFlowers.tsx
+  LoadingScreen.tsx
+  theme-provider.tsx
+  ui/      shadcn/ui components
+hooks/
+  useInvitation.ts
+  use-toast.ts
+  use-mobile.ts
+lib/
+  utils.ts
+public/
+  images/
+  music/
+styles/
+  globals.css
+bckup/           backup components
+components.json  shadcn/ui config
+package.json
+tsconfig.json
+next.config.mjs
+tailwind.config.js
+README.md
 ```
 
 ---
 
-## 🚀 Getting Started
+## 🧑‍💻 Getting Started
 
-### Prerequisites
+### Requirements
 
-- **Node.js** 18.0 or higher
-- **pnpm** 8.0+ (or npm/yarn as alternatives)
-- **Git** for version control
+- Node.js ≥18
+- pnpm ≥8 (npm/yarn also supported)
+- Git
 
 ### Installation
 
-1. **Clone the repository**
+```bash
+git clone <repo-url>
+cd <repo-directory>
+pnpm install
+cp .env.example .env.local           # copy environment variables
+```
 
-   ```bash
-   git clone https://github.com/your-org/wedding-invitation.git
-   cd wedding-invitation
-   ```
-
-2. **Install dependencies**
-
-   ```bash
-   pnpm install
-   # Alternative: npm install or yarn install
-   ```
-
-3. **Create environment file**
-
-   ```bash
-   cp .env.example .env.local
-   ```
-
-4. **Update configuration** (see [Configuration](#-configuration) section below)
-
-### Development Server
-
-Start the development server with hot-reload:
+### Development
 
 ```bash
 pnpm dev
+# open http://localhost:3000?guest=John
 ```
 
-- Open [http://localhost:3000](http://localhost:3000) in your browser
-- Test guest personalization: [http://localhost:3000?guest=John](http://localhost:3000?guest=John)
-- Changes to files will reload automatically
+Hot reload is enabled; edits refresh automatically.
 
-### Production Build
-
-Build the application for production and test locally:
+### Build & Production
 
 ```bash
-# Build optimized bundle
+pnpm build
+pnpm start                     # runs on http://localhost:3000
+```
+
+### Linting
+
+```bash
+pnpm lint
+```
+
 pnpm build
 
 # Start production server
+
 pnpm start
+
 # Server runs on http://localhost:3000
-```
+
+````
 
 ### Linting
 
@@ -211,7 +155,7 @@ Check code quality and TypeScript errors:
 
 ```bash
 pnpm lint
-```
+````
 
 ---
 

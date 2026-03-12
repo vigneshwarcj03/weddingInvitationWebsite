@@ -58,7 +58,7 @@ export default function WeddingDetails() {
                 {/* Image container */}
                 <div className="relative h-[550px] overflow-hidden">
                   <Image
-                    src="/Reception.jpg"
+                    src="/Reception.png"
                     alt="Reception"
                     fill
                     className="object-cover group-hover:scale-105 transition duration-500"
@@ -121,7 +121,7 @@ export default function WeddingDetails() {
                 {/* Image container */}
                 <div className="relative h-[550px] overflow-hidden">
                   <Image
-                    src="/Wedding Ceremony.jpg"
+                    src="/Wedding Ceremony.png"
                     alt="Wedding Ceremony"
                     fill
                     className="object-cover group-hover:scale-105 transition duration-500"

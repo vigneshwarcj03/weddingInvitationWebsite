@@ -65,7 +65,7 @@ export default function QuickGuestConfirmation() {
     }
   };
 
-  const emojis = ["😍", "👍", "❤️", "💕"];
+  const emojis = ["😍", "👍", "❤️", "🍻"];
 
   return (
     <section className="py-20 px-6 bg-background relative">

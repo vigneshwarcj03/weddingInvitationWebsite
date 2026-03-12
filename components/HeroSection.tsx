@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import FallingFlowers from "@/components/FallingFlowers";
+import Image from "next/image";
 
 interface HeroSectionProps {
   guestName: string;
@@ -54,6 +55,39 @@ export default function HeroSection({ guestName }: HeroSectionProps) {
           />
           <div className="w-12 h-px bg-gradient-to-l from-transparent via-primary to-transparent" />
         </div>
+
+        {/* Hero Image */}
+        <motion.div
+          initial={{ opacity: 0, rotate: -6 }}
+          animate={{
+            opacity: 1,
+            rotate: [-6, 6, -6],
+            y: [0, -8, 0],
+          }}
+          transition={{
+            opacity: { duration: 0.8, delay: 0.3 },
+            rotate: {
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut",
+            },
+            y: {
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut",
+            },
+          }}
+          className="flex justify-center origin-top"
+        >
+          <Image
+            src="/HeroSection_Image.png"
+            alt="Wedding Couple"
+            width={240}
+            height={240}
+            priority
+            className="mx-auto drop-shadow-xl"
+          />
+        </motion.div>
 
         {/* Couple Names */}
         <motion.h1

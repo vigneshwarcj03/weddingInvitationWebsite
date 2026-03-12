@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
+import BackgroundMusic from "@/components/BackgroundMusic";
 
 const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
@@ -20,15 +21,8 @@ export const metadata: Metadata = {
     "trisha",
   ],
   authors: [{ name: "Vijay & Trisha" }],
-  icons: {
-    icon: [
-      { url: "/icon-light-32x32.png", media: "(prefers-color-scheme: light)" },
-      { url: "/icon-dark-32x32.png", media: "(prefers-color-scheme: dark)" },
-      { url: "/icon.svg", type: "image/svg+xml" },
-    ],
-    apple: "/apple-icon.png",
-  },
-  metadataBase: new URL("https://Vijay&TrishaWeddingInvitation.com"), // ✅ Add this
+  icons: "/favicon.jpg", // ✅ single icon as a string
+  metadataBase: new URL("https://Vijay&TrishaWeddingInvitation.com"),
   openGraph: {
     title: "Vijay & Trisha - Wedding Invitation",
     description: "Join us to celebrate our special day on March 15th, 2026",
@@ -59,11 +53,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" type="image/x-icon" href="/favicon.jpg" />
+      </head>
       <body className="font-sans antialiased">
+        <BackgroundMusic />
         {children}
         <Analytics />
       </body>
     </html>
   );
 }
-
