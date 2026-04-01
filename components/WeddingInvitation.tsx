@@ -5,12 +5,15 @@ import { motion } from "framer-motion";
 import { useInvitation } from "@/hooks/useInvitation";
 import TempleDoorIntro from "./TempleDoorIntro";
 import HeroSection from "./HeroSection";
-import FallingFlowers from "./FallingFlowers";
+
+import LoveStory from "./LoveStory";
 import CountdownTimer from "./CountdownTimer";
-import WeddingDetails from "./WeddingDetails";
 import Gallery from "./Gallery";
 import GuestConfirmation from "./GuestConfirmation";
-import CelebrationScreen from "./CelebrationScreen";
+import WeddingCeremony from "./WeddingCeremony";
+import Reception from "./Reception";
+import Footer from "./Footer";
+import LocationComponent from "./LocationComponent";
 
 interface WeddingInvitationProps {
   guestName: string;
@@ -47,7 +50,7 @@ export default function WeddingInvitation({
   }, [guestName, currentGuest, updateGuestName]);
 
   if (isConfirmed) {
-    return <CelebrationScreen />;
+    return <CelebrationScreen guestName={currentGuest} />;
   }
 
   if (showDoorIntro) {
@@ -55,11 +58,10 @@ export default function WeddingInvitation({
   }
 
   return (
-    <div className="min-h-[calc(var(--vh)*100)] bg-background overflow-auto relative">
-      <FallingFlowers />
-
+    <div className="min-h-[calc(var(--vh)*100)] overflow-auto relative">
       <main className="relative z-10">
         <HeroSection guestName={currentGuest} />
+        <LoveStory />
 
         <motion.section
           initial={{ opacity: 0, y: 20 }}
@@ -73,7 +75,9 @@ export default function WeddingInvitation({
           </div>
         </motion.section>
 
-        <WeddingDetails />
+        <Reception />
+        <WeddingCeremony />
+        <LocationComponent />
 
         <motion.section
           initial={{ opacity: 0, y: 20 }}
@@ -101,6 +105,7 @@ export default function WeddingInvitation({
             />
           </div>
         </motion.section>
+        <Footer />
       </main>
     </div>
   );

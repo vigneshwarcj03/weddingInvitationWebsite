@@ -18,7 +18,8 @@ function escapeMarkdown(text: string) {
 
 export async function POST(request: NextRequest) {
   try {
-    if (request.headers.get('content-type') !== 'application/json') {
+    const contentType = request.headers.get('content-type') || '';
+    if (!contentType.toLowerCase().includes('application/json')) {
       return NextResponse.json(
         { error: 'Content-Type must be application/json' },
         { status: 400 }
@@ -28,9 +29,9 @@ export async function POST(request: NextRequest) {
     const data: AttendanceData = await request.json();
 
     // Validate required fields
-    if (!data.name || !data.email || !data.phone || !data.attending) {
+    if (!data.name?.trim() || !data.email?.trim() || !data.phone?.trim() || !data.attending?.trim()) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
+        { error: 'Missing required fields: name, email, phone, attending' },
         { status: 400 }
       );
     }

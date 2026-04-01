@@ -128,15 +128,19 @@ export default function CountdownTimer({
   };
 
   return (
-    <section className="py-20 px-6 bg-background" onMouseMove={handleMouseMove}>
-      <div className="max-w-6xl mx-auto">
+    <section
+      className=" h-screen flex items-center justify-center bg-background"
+      onMouseMove={handleMouseMove}
+    >
+      <div className="flex flex-col items-center text-center">
         {/* Title */}
-        <div className="text-center mb-14">
-          <h2 className="text-4xl md:text-5xl font-cinzel text-primary mb-4">
+        <div className="mb-14">
+          <h2 className="heading-standard text-4xl md:text-5xl tracking-wide mb-2">
             The Wedding
           </h2>
+          <div className="w-24 h-1 mx-auto bg-gradient-to-r from-transparent via-yellow-500 to-transparent" />
 
-          <p className="text-lg text-foreground tracking-wide">
+          <p className="text-lg text-foreground mt-10 tracking-wide">
             15th May, 2026 | 5:00 PM IST
           </p>
 
@@ -156,8 +160,8 @@ export default function CountdownTimer({
         </div>
 
         {/* Message */}
-        <div className="text-center mt-12">
-          <p className="text-lg md:text-xl text-foreground font-light leading-relaxed max-w-2xl mx-auto">
+        <div className="mt-12 max-w-xl">
+          <p className="text-lg md:text-xl text-foreground font-light leading-relaxed">
             Join us for a day filled with joy, love, blessings, and
             unforgettable moments
           </p>

@@ -70,12 +70,12 @@ export default function TempleDoorIntro({
 
           <div className="flex justify-center">
             <Image
-              src="/Couples_1.png"
+              src="/Couples_1.jpg"
               alt="Couple"
               width={220}
               height={30}
               loading="eager"
-              className="rounded-2xl border-2 border-[#D4AF37]"
+              className="rounded-2xl border-2 border-[#D4AF37] scale-90"
             />
           </div>
 

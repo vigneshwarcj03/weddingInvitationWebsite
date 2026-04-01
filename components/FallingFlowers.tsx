@@ -9,18 +9,37 @@ interface Flower {
   delay: number;
   duration: number;
   size: number;
+  image: string;
+  drift: number;
+  rotateStart: number;
+  rotateEnd: number;
 }
 
 export default function FallingFlowers() {
   const [flowers, setFlowers] = useState<Flower[]>([]);
 
+  const petalImages = [
+    "/rose-petal.png",
+    "/rose-petal-1.png",
+    "/rose-petal-2.png",
+    "/rose-petal-3.png",
+    "/rose-petal-4.png",
+    "/rose-petal-5.png",
+    "/rose-petal-6.png",
+    "/rose-petal-7.png",
+  ];
+
   useEffect(() => {
-    const newFlowers = Array.from({ length: 12 }, (_, i) => ({
+    const newFlowers = Array.from({ length: 35 }, (_, i) => ({
       id: i,
       left: Math.random() * 100,
-      delay: Math.random() * 2,
-      duration: 8 + Math.random() * 4,
-      size: 20 + Math.random() * 20,
+      delay: Math.random() * 5,
+      duration: 6 + Math.random() * 6, // varied speeds
+      size: 15 + Math.random() * 25,
+      image: petalImages[Math.floor(Math.random() * petalImages.length)],
+      drift: 30 + Math.random() * 50, // side movement
+      rotateStart: Math.random() * 180,
+      rotateEnd: Math.random() * 720 - 360,
     }));
     setFlowers(newFlowers);
   }, []);
@@ -30,37 +49,37 @@ export default function FallingFlowers() {
       {flowers.map((flower) => (
         <motion.div
           key={flower.id}
-          initial={{ y: -100, opacity: 0, rotate: 0 }}
+          initial={{
+            y: -120,
+            opacity: 0,
+            x: 0,
+            rotate: flower.rotateStart,
+          }}
           animate={{
-            y: typeof window !== "undefined" ? window.innerHeight + 100 : 1000,
-            opacity: [0, 0.8, 0.8, 0],
-            rotate: 360,
+            y: typeof window !== "undefined" ? window.innerHeight + 120 : 1000,
+            x: [0, flower.drift, -flower.drift, 0], // wind sway
+            opacity: [0, 1, 1, 0],
+            rotate: flower.rotateEnd,
           }}
           transition={{
             duration: flower.duration,
             delay: flower.delay,
             repeat: Infinity,
-            ease: "linear",
+            ease: "easeInOut",
           }}
           style={{ left: `${flower.left}%` }}
           className="absolute"
         >
-          <motion.div
-            animate={{ x: [0, 20, -20, 0] }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-            className="drop-shadow-lg"
+          <img
+            src={flower.image}
+            alt="petal"
             style={{
-              fontSize: `${flower.size}px`,
-              filter: "drop-shadow(0 0 8px rgba(212, 175, 55, 0.4))",
-              textShadow: "0 0 10px rgba(212, 175, 55, 0.3)",
+              width: `${flower.size}px`,
+              height: `${flower.size}px`,
+              objectFit: "contain",
+              filter: "drop-shadow(0 0 6px rgba(212, 175, 55, 0.3))",
             }}
-          >
-            {["🌸", "❤️", "💐", "🏵️"][Math.floor(Math.random() * 4)]}
-          </motion.div>
+          />
         </motion.div>
       ))}
     </div>

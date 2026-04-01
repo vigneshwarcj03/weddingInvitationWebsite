@@ -9,7 +9,7 @@
 [![React](https://img.shields.io/badge/React-19.2.4-61DAFB)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7.3-blue)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.2.0-38B2AC)](https://tailwindcss.com/)
-[![Framer Motion](https://img.shields.io/badge/Framer_Motion-11.18.2-0055FF)](https://www.framer.com/motion/)
+[![Framer Motion](https://img.shields.io/badge/Framer_Motion-11.0+-0055FF)](https://www.framer.com/motion/)
 
 ## 🚀 Overview
 
@@ -69,6 +69,7 @@ components/
   WeddingInvitation.tsx
   TempleDoorIntro.tsx
   HeroSection.tsx
+  LoveStory.tsx
   CountdownTimer.tsx
   WeddingDetails.tsx
   Gallery.tsx
@@ -85,7 +86,8 @@ hooks/
 lib/
   utils.ts
 public/
-  images/
+  Couples_1.jfif
+  download (6).jfif
   music/
 styles/
   globals.css
@@ -286,7 +288,7 @@ Records guest attendance and RSVP information.
 **WeddingInvitation.tsx**
 
 - Main orchestrating component
-- Manages flow: Door intro → Hero → Details → Gallery → Confirm → Celebration
+- Manages flow: Door intro → Hero → Love Story → Countdown → Details → Gallery → Confirm → Celebration
 - Passes guest name through the entire component tree
 
 **TempleDoorIntro.tsx**
@@ -294,6 +296,12 @@ Records guest attendance and RSVP information.
 - Renders animated temple doors with Framer Motion
 - Triggers on first load
 - Can be skipped with user interaction
+
+**LoveStory.tsx**
+
+- Interactive timeline of the couple's journey
+- Alternating layout with animated timeline nodes
+- Personalized message for guests
 
 **CountdownTimer.tsx**
 
@@ -521,8 +529,8 @@ For support or questions, please contact the development team.
 
 For questions about this website or custom modifications, please reach out to the project maintainers.
 
-**Last Updated:** March 2025  
-**Project Version:** 1.0.0
+**Last Updated:** March 2026  
+**Project Version:** 0.1.0
 
 ### Hard-coded Details
 
@@ -537,7 +545,7 @@ Most wedding-specific data is defined in components:
 
 Colors and fonts are set in `app/globals.css`:
 
-```css
+````css
 :root {
   --background: linear-gradient(135deg, #2b0000 0%, #8b0000 100%);
   --foreground: #ffffff;
@@ -545,48 +553,6 @@ Colors and fonts are set in `app/globals.css`:
   --secondary: #b22222; /* firebrick red */
   --accent: #ff3b3b; /* bright romantic red */
 }
-```
-
----
-
-## 📁 Project Structure
-
-```
-.
-├── app/
-│   ├── api/
-│   │   └── confirm-attendance/route.ts
-│   ├── globals.css
-│   ├── layout.tsx
-│   └── page.tsx
-├── components/
-│   ├── ui/
-│   │   └── (shadcn/ui components)
-│   ├── CelebrationScreen.tsx
-│   ├── CountdownTimer.tsx
-│   ├── FallingFlowers.tsx
-│   ├── Gallery.tsx
-│   ├── GuestConfirmation.tsx
-│   ├── HeroSection.tsx
-│   ├── LoadingScreen.tsx
-│   ├── TempleDoorIntro.tsx
-│   ├── WeddingDetails.tsx
-│   ├── WeddingInvitation.tsx
-│   └── theme-provider.tsx
-├── hooks/
-│   ├── use-mobile.ts
-│   ├── use-toast.ts
-│   └── useInvitation.ts
-├── lib/
-│   └── utils.ts
-├── public/
-│   ├── Background_Beach_image.png
-│   ├── Background_Temple_image.png
-│   └── (other assets)
-└── styles/
-    └── globals.css
-```
-
 ---
 
 ## 🧩 API Endpoints
@@ -605,7 +571,7 @@ Accepts a JSON body with guest information:
   "dietary": "vegetarian",
   "message": "Excited to celebrate!"
 }
-```
+````
 
 Returns:
 

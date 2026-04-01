@@ -1,309 +1,213 @@
 "use client";
 
-import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { Send } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import confetti from "canvas-confetti";
+import Particles from "@tsparticles/react";
+import { Heart, CheckCircle2 } from "lucide-react";
 
 interface FormData {
   name: string;
-  emoji: string;
   message: string;
+  emoji: string;
 }
 
-interface GuestConfirmationProps {
-  guestName: string;
-  onConfirmation: () => void;
-}
+const emojis = ["😍", "❤️", "👍", "🍻"];
 
-export default function GuestConfirmation({
-  guestName,
-  onConfirmation,
-}: GuestConfirmationProps) {
-  const { register, handleSubmit, reset } = useForm<FormData>();
-  const [sending, setSending] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [hasNavigated, setHasNavigated] = useState(false);
-  const router = useRouter();
+export default function GuestConfirmation() {
+  const [formData, setFormData] = useState<FormData>({
+    name: "",
+    message: "",
+    emoji: "😍",
+  });
 
-  const WHATSAPP_NUMBER = "+1234567890"; // Replace with your WhatsApp number in international format
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
-  const onSubmit = async (data: FormData) => {
-    if (sending || hasNavigated) return;
-    setSending(true);
+  const fireConfetti = () => {
+    const duration = 2000;
+    const end = Date.now() + duration;
 
-    try {
-      const payload = {
-        name: data.name,
-        email: "guest@example.com",
-        phone: "0000000000",
-        dietary: "",
-        guests: 1,
-        message: data.message || "",
-        attending: "yes",
-        emoji: data.emoji || "N/A",
-      };
+    const colors = ["#D4AF37", "#ffffff", "#ff69b4"];
 
-      const response = await fetch("/api/confirm-attendance", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
+    (function frame() {
+      confetti({
+        particleCount: 4,
+        angle: 60,
+        spread: 70,
+        origin: { x: 0 },
+        colors,
+      });
+      confetti({
+        particleCount: 4,
+        angle: 120,
+        spread: 70,
+        origin: { x: 1 },
+        colors,
       });
 
-      const result = await response.json();
-
-      if (response.ok && result.success) {
-        setSuccess(true);
-        onConfirmation();
-
-        // Reset form after a short delay; navigation is now handled by state change
-        setTimeout(() => {
-          reset();
-          setSending(false);
-        }, 1800);
-      } else {
-        console.error("Error submitting RSVP:", result.error);
-        setSending(false);
-        alert("Failed to send RSVP. Please try again!");
-      }
-    } catch (err) {
-      console.error("Unexpected error:", err);
-      setSending(false);
-      alert("Something went wrong. Please try again!");
-    }
+      if (Date.now() < end) requestAnimationFrame(frame);
+    })();
   };
 
-  const emojis = ["😍", "👍", "❤️", "🍻"];
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+
+    if (!formData.name.trim()) return;
+
+    setLoading(true);
+
+    await new Promise((r) => setTimeout(r, 800));
+
+    const existing = JSON.parse(localStorage.getItem("weddingRSVPs") || "[]");
+
+    existing.push({
+      ...formData,
+      timestamp: new Date().toISOString(),
+    });
+
+    localStorage.setItem("weddingRSVPs", JSON.stringify(existing));
+
+    setLoading(false);
+    setSubmitted(true);
+    fireConfetti();
+  };
 
   return (
-    <section className="py-20 px-6 bg-background relative">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7 }}
-        viewport={{ once: true }}
-        className="max-w-md mx-auto relative z-10"
-      >
-        {/* Floating Golden Particles */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(18)].map((_, i) => (
-            <motion.span
-              key={i}
-              className="absolute w-1.5 h-1.5 bg-[#D4AF37] rounded-full opacity-60"
-              initial={{
-                x: Math.random() * 800,
-                y: Math.random() * 600,
-                opacity: 0,
-              }}
-              animate={{
-                y: [null, -40, 0],
-                opacity: [0, 0.8, 0],
-              }}
-              transition={{
-                duration: 6 + Math.random() * 4,
-                repeat: Infinity,
-                delay: Math.random() * 5,
-              }}
-            />
-          ))}
+    <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-28 overflow-hidden">
+      {/* Background pattern */}
+      <div className="absolute inset-0 opacity-[0.05] bg-[radial-gradient(circle_at_center,#D4AF37_1px,transparent_1px)] bg-[size:50px_50px]" />
+
+      {/* Fireworks */}
+      {submitted && (
+        <Particles
+          className="absolute inset-0 z-0"
+          options={{
+            particles: {
+              number: { value: 0 },
+              size: { value: 3 },
+              move: { enable: true, speed: 6, outModes: "destroy" },
+            },
+            emitters: {
+              direction: "top",
+              rate: { delay: 0.2, quantity: 5 },
+              position: { x: 50, y: 100 },
+            },
+          }}
+        />
+      )}
+
+      <div className="w-full max-w-sm sm:max-w-md mx-auto relative z-10">
+        {/* Title */}
+        <div className="text-center mb-10">
+          <h2 className="heading-standard text-4xl md:text-5xl tracking-wide mb-2">
+            Leave a Message
+          </h2>
+
+          <div className="w-24 h-1 mx-auto bg-gradient-to-r from-transparent via-yellow-500 to-transparent" />
+          <p className="text-gray-500 text-sm mt-10 sm:text-base">
+            Share your wishes and blessings ✧
+          </p>
         </div>
-        {/* Gold framed card container */}
-        <motion.div
-          initial={{ scale: 0.95 }}
-          whileInView={{ scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          viewport={{ once: true }}
-          className="relative bg-white/60 backdrop-blur-xl border border-white/40 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.15)] p-8 overflow-hidden"
-        >
-          <div className="absolute inset-0 rounded-3xl border border-[#D4AF37]/30 pointer-events-none" />
 
-          <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-[#D4AF37]/20 via-transparent to-[#B8962E]/20 blur-xl opacity-60 pointer-events-none" />
-
-          {/* Shimmer overlay */}
-          <div className="absolute inset-0 shimmer opacity-5 rounded-xl pointer-events-none" />
-
-          {success && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="absolute inset-0 flex items-center justify-center bg-white/80 backdrop-blur-lg rounded-3xl z-50"
-            >
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ type: "spring", stiffness: 200 }}
-                className="text-center"
+        <AnimatePresence mode="wait">
+          {!submitted ? (
+            <div className="bg-gradient-to-br from-[#D4AF37]/40 to-transparent p-[1px] rounded-2xl">
+              <motion.form
+                key="form"
+                onSubmit={handleSubmit}
+                className="bg-[#660033] text-white backdrop-blur-sm p-8 sm:p-10 md:p-12 rounded-2xl shadow-[0_10px_30px_rgba(212,175,55,0.2)] space-y-8"
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -40 }}
               >
-                <div className="text-5xl mb-3">🎉</div>
-                <p className="text-xl font-semibold text-[#A67C00]">
-                  Blessings Sent!
-                </p>
-              </motion.div>
-            </motion.div>
-          )}
+                {/* Name */}
+                <label className="block text-sm mb-1 text-[#D4AF37]">
+                  Your Name
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  placeholder="Your Name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="w-full px-4 py-4 rounded-xl border border-[#D4AF37] bg-transparent text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                />
 
-          {/* Top decorative element */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            viewport={{ once: true }}
-            className="text-center mb-8 relative z-10"
-          >
-            <div className="text-4xl mb-4">✧</div>
-          </motion.div>
-
-          {/* Title */}
-          <motion.h3
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            viewport={{ once: true }}
-            className="text-3xl md:text-4xl font-cinzel text-center text-[#A67C00] mb-2 tracking-wider"
-          >
-            Confirm Your
-          </motion.h3>
-          <motion.h3
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.25 }}
-            viewport={{ once: true }}
-            className="text-3xl md:text-4xl font-cinzel text-center text-[#A67C00] mb-8 tracking-wider"
-          >
-            Presence
-          </motion.h3>
-
-          {/* Divider */}
-          <div className="flex items-center justify-center gap-3 mb-8">
-            <span className="w-10 h-px bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent" />
-            <span className="text-[#D4AF37] text-lg">✦</span>
-            <span className="w-10 h-px bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent" />
-          </div>
-
-          {/* Form */}
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="space-y-6 relative z-10"
-          >
-            {/* Name Input */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              viewport={{ once: true }}
-            >
-              <label className="block text-sm font-cinzel text-[#7A5C20] mb-3 uppercase tracking-widest">
-                Your Name
-              </label>
-              <motion.input
-                type="text"
-                {...register("name", { required: true })}
-                placeholder="Enter your name"
-                whileFocus={{ scale: 1.02 }}
-                className="w-full px-5 py-3 rounded-xl bg-[#FFFDF7] border border-[#D4AF37]/50 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/40 focus:border-[#D4AF37] transition duration-300 text-lg"
-                required
-              />
-            </motion.div>
-
-            {/* Emoji Selector - Blessings */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.35 }}
-              viewport={{ once: true }}
-            >
-              <label className="block text-sm font-cinzel text-[#7A5C20] mb-4 uppercase tracking-widest text-center">
-                Send Your Blessings
-              </label>
-              <div className="flex justify-center gap-4">
-                {emojis.map((emoji) => (
-                  <motion.label
-                    key={emoji}
-                    whileHover={{ scale: 1.2 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="cursor-pointer relative group"
-                  >
-                    <input
-                      type="radio"
-                      {...register("emoji")}
-                      value={emoji}
-                      className="hidden peer"
-                    />
-
-                    <motion.span
-                      whileHover={{
-                        filter: "drop-shadow(0 0 8px rgba(212, 175, 55, 0.6))",
-                      }}
-                      className="block p-3 rounded-full transition-all duration-200 text-3xl border-2 border-transparent peer-checked:border-[#D4AF37] peer-checked:bg-[#D4AF37]/20 peer-checked:scale-110 hover:border-primary/50 group-hover:drop-shadow-lg"
+                {/* Emoji */}
+                <div className="flex justify-center gap-4">
+                  {emojis.map((emoji) => (
+                    <button
+                      key={emoji}
+                      type="button"
+                      onClick={() => setFormData((p) => ({ ...p, emoji }))}
+                      className={`text-2xl sm:text-3xl p-2 transition-all hover:scale-125 hover:drop-shadow-[0_0_6px_#D4AF37] ${
+                        formData.emoji === emoji
+                          ? "scale-125 drop-shadow-[0_0_6px_#D4AF37]"
+                          : ""
+                      }`}
                     >
                       {emoji}
-                    </motion.span>
-                  </motion.label>
-                ))}
-              </div>
-            </motion.div>
+                    </button>
+                  ))}
+                </div>
 
-            {/* Message Textarea */}
+                {/* Message */}
+                <label className="block text-sm mb-1 text-[#D4AF37]">
+                  Your Message
+                </label>
+                <textarea
+                  name="message"
+                  rows={5}
+                  placeholder="Your Message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-xl border border-[#D4AF37] bg-transparent text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                />
+
+                {/* Submit */}
+                <motion.button
+                  type="submit"
+                  disabled={loading}
+                  whileHover={{ scale: 1.05 }}
+                  className="w-full py-3 bg-[#D4AF37] text-[#660033] font-semibold rounded-xl hover:opacity-90 transition-all"
+                >
+                  {loading ? "Sending..." : "Send Wishes"}
+                </motion.button>
+              </motion.form>
+            </div>
+          ) : (
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              viewport={{ once: true }}
+              key="success"
+              className="bg-white/70 backdrop-blur-sm p-8 rounded-2xl text-center shadow-[0_10px_30px_rgba(212,175,55,0.2)]"
+              initial={{ scale: 0.7, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
             >
-              <label className="block text-sm font-cinzel text-[#7A5C20] mb-3 uppercase tracking-widest">
-                Your Message (Optional)
-              </label>
-              <motion.textarea
-                {...register("message")}
-                placeholder="Share your blessings and wishes..."
-                rows={3}
-                whileFocus={{ scale: 1.02 }}
-                className="w-full px-5 py-3 rounded-xl bg-[#FFFDF7] border border-[#D4AF37]/50 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/40 focus:border-[#D4AF37] resize-none transition duration-300"
-              />
+              <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
+
+              <h3 className="text-xl sm:text-2xl font-semibold">
+                Thank you, {formData.name}
+              </h3>
+
+              <p className="text-muted-foreground mt-2">
+                Your wishes have been received ✨
+              </p>
+
+              <p className="text-4xl mt-4">{formData.emoji}</p>
             </motion.div>
+          )}
+        </AnimatePresence>
 
-            {/* Submit Button */}
-            <motion.button
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "0 0 30px rgba(102,0,51,0.8)",
-              }}
-              whileTap={{ scale: 0.96 }}
-              animate={{
-                boxShadow: [
-                  "0 0 8px rgba(102,0,51,0.4)",
-                  "0 0 20px rgba(212,175,55,0.6)",
-                  "0 0 8px rgba(102,0,51,0.4)",
-                ],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-              }}
-              type="submit"
-              disabled={sending}
-              className="w-full py-4 bg-gradient-to-r from-[#660033] to-[#7a003d] text-white rounded-xl font-semibold flex items-center justify-center gap-3 shadow-lg tracking-wider uppercase mt-8 transition-all duration-300"
-            >
-              <Send className="w-5 h-5 text-white" />
-              {sending ? "Sending..." : "Confirm Attendance"}
-            </motion.button>
-          </form>
-
-          {/* Bottom decorative element */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            viewport={{ once: true }}
-            className="text-center mt-8 relative z-10"
-          >
-            <p className="text-sm text-[#8B6A2B] font-light">✧</p>
-          </motion.div>
-        </motion.div>
-      </motion.div>
+        <div className="text-center mt-10">
+          <Heart className="mx-auto text-red-500" fill="currentColor" />
+        </div>
+      </div>
     </section>
   );
 }

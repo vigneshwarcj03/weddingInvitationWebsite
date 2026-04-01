@@ -10,12 +10,24 @@ interface HeroSectionProps {
 
 export default function HeroSection({ guestName }: HeroSectionProps) {
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-background px-6 overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center px-6 overflow-hidden">
       {/* Falling Flowers */}
-      <FallingFlowers />
-
+      <div className="relative z-0 opacity-90">
+        <FallingFlowers />
+      </div>
       {/* Subtle background pattern */}
-      <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,#D4AF37_1px,transparent_1px)] bg-[size:40px_40px]" />
+      <div className="absolute inset-0 opacity-[0.06] bg-[radial-gradient(circle_at_center,#D4AF37_1px,transparent_1px)] bg-[size:50px_50px]" />
+
+      <div className="absolute top-0 left-0 w-full z-10 flex justify-center">
+        <Image
+          src="/TopHero.png"
+          alt="Top Decoration"
+          width={600}
+          height={200}
+          className="w-auto h-auto object-contain"
+          priority
+        />
+      </div>
 
       {/* Floating particles */}
       <div className="absolute inset-0 pointer-events-none z-0">
@@ -26,26 +38,23 @@ export default function HeroSection({ guestName }: HeroSectionProps) {
         >
           ✧
         </motion.span>
-
-        <motion.span
-          className="absolute bottom-32 right-24 text-primary text-lg"
-          animate={{ y: [0, -10, 0] }}
-          transition={{ duration: 5, repeat: Infinity }}
-        >
-          ✦
-        </motion.span>
-
-        <motion.span
-          className="absolute top-1/2 left-1/4 text-primary text-lg"
-          animate={{ y: [0, -20, 0] }}
-          transition={{ duration: 7, repeat: Infinity }}
-        >
-          ✧
-        </motion.span>
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 max-w-4xl mx-auto text-center space-y-10">
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: {},
+          visible: {
+            transition: {
+              staggerChildren: 0.4,
+              delayChildren: 0.5,
+            },
+          },
+        }}
+        className="relative z-10 max-w-4xl mx-auto text-center space-y-10"
+      >
         {/* Decorative divider */}
         <div className="flex justify-center items-center gap-4">
           <div className="w-12 h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
@@ -77,7 +86,7 @@ export default function HeroSection({ guestName }: HeroSectionProps) {
               ease: "easeInOut",
             },
           }}
-          className="flex justify-center origin-top"
+          className="flex justify-center origin-top relative"
         >
           <Image
             src="/HeroSection_Image.png"
@@ -85,18 +94,30 @@ export default function HeroSection({ guestName }: HeroSectionProps) {
             width={240}
             height={240}
             priority
-            className="mx-auto drop-shadow-xl"
+            className="mx-auto drop-shadow-[0_20px_40px_rgba(0,0,0,0.25)]"
           />
         </motion.div>
 
         {/* Couple Names */}
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-5xl md:text-7xl font-[Poppins] font-light tracking-widest leading-[1.2] bg-gradient-to-r from-rose-400 to-amber-400 bg-clip-text text-transparent"
-        >
-          Vijay & Trisha
+        <motion.h1 className="text-5xl md:text-4xl font-[Outfit] leading-[1.25] text-center">
+          <span className="block bg-gradient-to-r from-rose-400 to-amber-400 bg-clip-text text-transparent font-medium tracking-[0.08em]">
+            Karthik
+          </span>
+
+          <span className="flex justify-center my-4 scale-95">
+            <Image
+              src="/heroCenter.png"
+              alt="and"
+              width={95}
+              height={95}
+              className="object-contain"
+              priority
+            />
+          </span>
+
+          <span className="block bg-gradient-to-r from-rose-400 to-amber-400 bg-clip-text text-transparent font-medium tracking-[0.08em]">
+            Shakti
+          </span>
         </motion.h1>
 
         {/* Subtitle */}
@@ -109,18 +130,6 @@ export default function HeroSection({ guestName }: HeroSectionProps) {
           Together with their families, they invite you to celebrate their
           wedding
         </motion.p>
-
-        {/* Guest Name */}
-        {guestName && (
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="text-lg md:text-xl text-accent font-cinzel tracking-wide"
-          >
-            Dear <span className="text-primary font-semibold">{guestName}</span>
-          </motion.p>
-        )}
 
         {/* Date & Location */}
         <div className="space-y-2 pt-3">
@@ -142,16 +151,17 @@ export default function HeroSection({ guestName }: HeroSectionProps) {
           />
           <div className="w-12 h-px bg-gradient-to-l from-transparent via-primary to-transparent" />
         </div>
-      </div>
-
-      {/* Scroll Indicator */}
-      <motion.div
-        animate={{ y: [0, 10, 0] }}
-        transition={{ repeat: Infinity, duration: 2 }}
-        className="absolute bottom-10 flex flex-col items-center text-primary z-10"
-      >
-        <span className="text-xs tracking-widest font-cinzel">SCROLL</span>
-        <div className="w-px h-8 bg-primary mt-2" />
+        {/* Bottom Decoration */}
+        <div className="absolute bottom-0 left-0 w-full z-10 mt-35 flex justify-center">
+          <Image
+            src="/bottom.png"
+            alt="Bottom Decoration"
+            width={600}
+            height={200}
+            className="w-auto h-auto  object-contain"
+            priority
+          />
+        </div>
       </motion.div>
     </section>
   );

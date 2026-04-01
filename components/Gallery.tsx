@@ -1,147 +1,248 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
 
-export default function MobileImageSlider() {
-  const images = [
-    "/journey1.jpg",
-    "/journey2.jpg",
-    "/journey3.jpg",
-    "/journey4.jpg",
-    "/journey5.jpg",
-    "/journey6.jpg",
-  ];
+const GALLERY_SECTIONS = [
+  { id: "engagement", name: "Engagement" },
+  { id: "prewedding", name: "Pre-Wedding" },
+  { id: "wedding", name: "Wedding" },
+  { id: "family", name: "Family" },
+];
 
+const galleryImages = {
+  engagement: [
+    {
+      id: 1,
+      title: "The Proposal",
+      alt: "Engagement photo 1",
+      src: "/engagement1.jfif",
+    },
+    {
+      id: 2,
+      title: "Golden Hour",
+      alt: "Engagement photo 2",
+      src: "/engagement2.jfif",
+    },
+    {
+      id: 3,
+      title: "Together",
+      alt: "Engagement photo 3",
+      src: "/engagement3.jfif",
+    },
+  ],
+  prewedding: [
+    {
+      id: 4,
+      title: "Pre-Wedding Shoot",
+      alt: "Pre-wedding photo 1",
+      src: "/pre1.jfif",
+    },
+    {
+      id: 5,
+      title: "Candid Moment",
+      alt: "Pre-wedding photo 2",
+      src: "/pre2.jfif",
+    },
+    {
+      id: 6,
+      title: "Sunset Love",
+      alt: "Pre-wedding photo 3",
+      src: "/pre3.jfif",
+    },
+  ],
+  wedding: [
+    {
+      id: 7,
+      title: "Wedding Ritual",
+      alt: "Wedding photo 1",
+      src: "/wedding1.jfif",
+    },
+    {
+      id: 8,
+      title: "Bride & Groom",
+      alt: "Wedding photo 2",
+      src: "/wedding2.jfif",
+    },
+    {
+      id: 9,
+      title: "Sacred Vows",
+      alt: "Wedding photo 3",
+      src: "/wedding3.jfif",
+    },
+  ],
+  family: [
+    {
+      id: 10,
+      title: "Family Portrait",
+      alt: "Family photo 1",
+      src: "/fam1.jfif",
+    },
+    {
+      id: 11,
+      title: "Together Forever",
+      alt: "Family photo 2",
+      src: "/fam2.jfif",
+    },
+    {
+      id: 12,
+      title: "Joy and Laughter",
+      alt: "Family photo 3",
+      src: "/fam3.jfif",
+    },
+  ],
+};
+
+export default function WeddingGallery() {
+  const [selectedImage, setSelectedImage] = useState<
+    (typeof galleryImages.engagement)[0] | null
+  >(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [rotateX, setRotateX] = useState(0);
-  const [rotateY, setRotateY] = useState(0);
-  const [lightPos, setLightPos] = useState({ x: 50, y: 50 });
-  const [shadow, setShadow] = useState("0px 25px 60px rgba(0,0,0,0.25)");
+  const [activeSection, setActiveSection] = useState("engagement");
 
-  // Auto slide every 3 seconds
+  const images = galleryImages[activeSection as keyof typeof galleryImages];
+
+  const nextImage = () => {
+    const next = (currentIndex + 1) % images.length;
+    setCurrentIndex(next);
+    setSelectedImage(images[next]);
+  };
+
+  const prevImage = () => {
+    const prev = (currentIndex - 1 + images.length) % images.length;
+    setCurrentIndex(prev);
+    setSelectedImage(images[prev]);
+  };
+
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-    }, 3000);
+    if (!selectedImage) return;
+    const interval = setInterval(nextImage, 3500);
     return () => clearInterval(interval);
-  }, [images.length]);
-
-  // Mouse tilt, light & shadow for active image
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-
-    setRotateY(((x - centerX) / centerX) * 10);
-    setRotateX(-((y - centerY) / centerY) * 10);
-
-    setLightPos({ x: (x / rect.width) * 100, y: (y / rect.height) * 100 });
-
-    const shadowX = (x - centerX) / 10;
-    const shadowY = (y - centerY) / 10;
-    setShadow(`${-shadowX}px ${-shadowY + 25}px 60px rgba(0,0,0,0.35)`);
-  };
-
-  const resetTilt = () => {
-    setRotateX(0);
-    setRotateY(0);
-    setLightPos({ x: 50, y: 50 });
-    setShadow("0px 25px 60px rgba(0,0,0,0.25)");
-  };
+  }, [selectedImage, images]);
 
   return (
-    <section className="py-24 px-6 bg-background relative">
-      <div className="max-w-4xl mx-auto relative z-10">
-        <div className="bg-light-cream  rounded-xl  p-8 md:p-12">
-          {/* Title */}
-          <div className="text-center mb-14">
-            <motion.div
-              initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="inline-block relative"
-            >
-              <h2 className="text-4xl md:text-5xl font-cinzel tracking-tight text-primary">
-                Our Journey
-              </h2>
+    <section className="relative min-h-screen px-4 py-24 overflow-hidden">
+      {/* subtle background pattern */}
+      <div className="absolute inset-0 opacity-[0.06] bg-[radial-gradient(circle_at_center,#D4AF37_1px,transparent_1px)] bg-[size:50px_50px]" />
 
-              {/* modern animated underline */}
-              <motion.div
-                initial={{ scaleX: 0 }}
-                whileInView={{ scaleX: 1 }}
-                transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
-                className="origin-left mt-3 h-[2px] w-full bg-gradient-to-r from-transparent via-primary to-transparent"
-              />
-            </motion.div>
-          </div>
-
-          {/* Carousel */}
-          <div
-            className="relative w-full max-w-[380px] mx-auto h-[640px] flex items-center justify-center perspective-[1200px]"
-            onMouseMove={handleMouseMove}
-            onMouseLeave={resetTilt}
-          >
-            {images.map((img, index) => {
-              // Calculate position relative to current index, circular
-              let position = index - currentIndex;
-              if (position < -images.length / 2) position += images.length;
-              if (position > images.length / 2) position -= images.length;
-
-              const isActive = position === 0;
-
-              // Transform styles for 3D effect
-              const translateX = position * 100; // spread out horizontally
-              const scale = isActive ? 1 : 0.75;
-              const opacity = Math.abs(position) > 2 ? 0 : 1;
-              const blur = isActive ? 0 : 6;
-              const brightness = isActive ? 1 : 0.7;
-              const rotateY = position * -15;
-
-              return (
-                <motion.div
-                  key={index}
-                  animate={{
-                    x: translateX,
-                    scale,
-                    opacity,
-                    rotateY: isActive ? rotateY + rotateY : rotateY,
-                    filter: `blur(${blur}px) brightness(${brightness})`,
-                    zIndex: isActive ? 10 : 10 - Math.abs(position),
-                    boxShadow: isActive
-                      ? shadow
-                      : "0px 10px 25px rgba(0,0,0,0.2)",
-                  }}
-                  transition={{ type: "spring", stiffness: 200, damping: 30 }}
-                  className="absolute w-[340px] h-[600px] rounded-2xl overflow-hidden bg-light-cream will-change-transform"
-                >
-                  <Image
-                    src={img}
-                    alt="journey image"
-                    fill
-                    className="object-cover"
-                    quality={90}
-                  />
-                  {/* Glass reflection */}
-                  {isActive && (
-                    <div
-                      className="absolute inset-0 pointer-events-none"
-                      style={{
-                        background: `radial-gradient(circle at ${lightPos.x}% ${lightPos.y}%, rgba(255,255,255,0.35), transparent 40%)`,
-                        mixBlendMode: "overlay",
-                      }}
-                    />
-                  )}
-                </motion.div>
-              );
-            })}
-          </div>
+      <div className="relative z-10 max-w-6xl mx-auto">
+        {/* Title */}
+        <div className="text-center mb-12">
+          <h2 className="heading-standard text-4xl md:text-5xl tracking-wide mb-2">
+            Our Wedding Gallery
+          </h2>
+          <div className="w-24 h-1 mx-auto bg-gradient-to-r from-transparent via-yellow-500 to-transparent" />
         </div>
+
+        {/* Tabs */}
+        <div className="flex justify-center gap-4 mb-12 flex-wrap">
+          {GALLERY_SECTIONS.map((section) => (
+            <button
+              key={section.id}
+              onClick={() => setActiveSection(section.id)}
+              className={`px-6 py-2 rounded-full font-medium tracking-wide transition-all duration-300 ${
+                activeSection === section.id
+                  ? "bg-yellow-500 text-white shadow-md"
+                  : "bg-white/60 text-gray-700 hover:bg-yellow-100"
+              }`}
+            >
+              {section.name}
+            </button>
+          ))}
+        </div>
+
+        {/* Grid */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeSection}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+          >
+            {images.map((image, idx) => (
+              <motion.div
+                key={image.id}
+                className="relative rounded-xl overflow-hidden cursor-pointer group"
+                onClick={() => {
+                  setSelectedImage(image);
+                  setCurrentIndex(idx);
+                }}
+                whileHover={{ scale: 1.03 }}
+              >
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  loading="lazy"
+                  className="w-full h-64 md:h-120 object-cover transition-all duration-700 group-hover:scale-110"
+                />
+
+                {/* soft overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+
+                {/* caption */}
+                <div className="absolute bottom-3 left-3 text-white text-sm bg-black/30 px-3 py-1 rounded-md">
+                  <p className="font-semibold">{image.title}</p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </AnimatePresence>
       </div>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedImage(null)}
+          >
+            <motion.div
+              className="relative max-w-4xl w-full max-h-[90vh]"
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.8 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close */}
+              <button
+                className="absolute -top-10 right-0 text-white"
+                onClick={() => setSelectedImage(null)}
+              >
+                <X className="w-7 h-7" />
+              </button>
+
+              {/* Navigation */}
+              <button
+                onClick={prevImage}
+                className="absolute left-2 top-1/2 -translate-y-1/2 text-white text-3xl"
+              >
+                ←
+              </button>
+
+              <button
+                onClick={nextImage}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-white text-3xl"
+              >
+                →
+              </button>
+
+              <div className="flex flex-col items-center">
+                <img
+                  src={selectedImage.src}
+                  alt={selectedImage.alt}
+                  className="rounded-lg max-h-[80vh] object-contain"
+                />
+                <p className="text-white mt-4 text-lg">{selectedImage.title}</p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

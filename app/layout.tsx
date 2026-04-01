@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Poppins } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import BackgroundMusic from "@/components/BackgroundMusic";
+import FallingFlowers from "@/components/FallingFlowers";
 
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-poppins",
+});
 
 export const metadata: Metadata = {
   title: "Vijay & Trisha - Wedding Invitation",
@@ -56,8 +60,11 @@ export default function RootLayout({
       <head>
         <link rel="icon" type="image/x-icon" href="/favicon.jpg" />
       </head>
-      <body className="font-sans antialiased">
+      <body
+        className={`${poppins.variable} font-poppins antialiased bg-gradient-to-br from-[#f8f5ef] via-[#fdfaf6] to-[#f3e6c9] min-h-screen`}
+      >
         <BackgroundMusic />
+        <FallingFlowers />
         {children}
         <Analytics />
       </body>
