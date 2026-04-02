@@ -168,7 +168,7 @@ export default function GuestConfirmation() {
                   placeholder="write your wishes here..."
                   value={formData.message}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-[#D4AF37] bg-transparent text-white/10 placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                  className="w-full px-4 py-3 rounded-xl border border-[#D4AF37] bg-transparent text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
                 />
 
                 {/* Submit */}
