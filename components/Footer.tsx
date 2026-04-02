@@ -18,7 +18,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative py-16 sm:py-20 md:py-24 px-4 overflow-hidden">
+    <footer className="relative py-14 sm:py-20 md:py-24 px-5 sm:px-6 overflow-hidden">
       {/* subtle pattern */}
       <div className="absolute inset-0 opacity-[0.06] bg-[radial-gradient(circle_at_center,#D4AF37_1px,transparent_1px)] bg-[size:50px_50px]" />
 
@@ -30,29 +30,36 @@ export default function Footer() {
         viewport={{ once: true }}
       >
         {/* Top grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 mb-12 text-center items-start">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 mb-12 text-center items-center">
           {/* Contact */}
           <motion.div
-            className="flex flex-col items-center space-y-4"
+            className="flex flex-col items-center justify-center space-y-4 w-full"
             variants={itemVariants}
           >
             <h3 className="text-xl md:text-2xl font-cinzel text-primary">
               Contact Us
             </h3>
 
-            <div className="space-y-3 text-muted-foreground">
-              <div className="flex items-center justify-center gap-2 hover:text-primary transition">
-                <Phone className="w-4 h-4" />
-                <a href="https://wa.me/918608553151" target="_blank">
+            <div className="space-y-4 text-muted-foreground w-full max-w-xs mx-auto">
+              <div className="flex items-start justify-center gap-2 max-w-[260px] mx-auto text-left">
+                <Phone className="w-4 h-4 mt-[3px] shrink-0" />
+                <a
+                  href="https://wa.me/918608553151"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-wedding-gold transition-colors text-sm md:text-base"
+                >
                   +91 8608553151
                 </a>
               </div>
 
-              <div className="flex items-center justify-center gap-2 hover:text-primary transition">
-                <Mail className="w-4 h-4" />
+              <div className="flex items-start justify-center gap-2 max-w-[260px] mx-auto text-left">
+                <Mail className="w-4 h-4 mt-[3px] shrink-0" />
                 <a
                   href="https://mail.google.com/mail/?view=cm&fs=1&to=cjfrontenddev@gmail.com"
                   target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-wedding-gold transition-colors text-sm md:text-base break-all leading-snug"
                 >
                   cjfrontenddev@gmail.com
                 </a>
@@ -62,7 +69,7 @@ export default function Footer() {
 
           {/* Links */}
           <motion.div
-            className="flex flex-col items-center space-y-4"
+            className="flex flex-col items-center justify-center space-y-4 w-full"
             variants={itemVariants}
           >
             <h3 className="text-xl md:text-2xl font-cinzel text-primary">
@@ -84,14 +91,14 @@ export default function Footer() {
 
           {/* Social */}
           <motion.div
-            className="flex flex-col items-center space-y-4"
+            className="flex flex-col items-center justify-center space-y-4 w-full"
             variants={itemVariants}
           >
             <h3 className="text-xl md:text-2xl font-cinzel text-primary">
               Share Your Love
             </h3>
 
-            <div className="flex justify-center items-center gap-6 text-xl">
+            <div className="flex justify-center items-center gap-5 sm:gap-6 text-xl flex-wrap">
               <a
                 href="https://instagram.com/cj_modern_wedding_invites"
                 target="_blank"
@@ -135,7 +142,7 @@ export default function Footer() {
 
         {/* Bottom */}
         <motion.div
-          className="text-center space-y-4 px-2 sm:px-0"
+          className="text-center space-y-4 px-4 sm:px-0"
           variants={itemVariants}
         >
           <div className="flex justify-center items-center gap-2 text-foreground">
@@ -145,7 +152,7 @@ export default function Footer() {
           </div>
 
           <p className="text-sm text-muted-foreground">
-            © {currentYear} Ahmed & Fatima. All moments are precious.
+            © {currentYear} Karthik & Shakti. All moments are precious.
           </p>
 
           <p className="text-sm text-muted-foreground max-w-md mx-auto">

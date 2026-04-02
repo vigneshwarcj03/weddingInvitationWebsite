@@ -143,7 +143,7 @@ export default function HeroSection({ guestName }: HeroSectionProps) {
         </div>
 
         {/* Bottom divider */}
-        <div className="flex justify-center items-center gap-4 pt-4">
+        <div className="flex justify-center items-center gap-4 mb-33 pt-4">
           <div className="w-12 h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
           <div
             className="w-2 h-2 rounded-full bg-primary"
@@ -156,7 +156,7 @@ export default function HeroSection({ guestName }: HeroSectionProps) {
           <Image
             src="/bottom.png"
             alt="Bottom Decoration"
-            width={600}
+            width={400}
             height={200}
             className="w-auto h-auto  object-contain"
             priority

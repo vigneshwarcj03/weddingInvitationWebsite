@@ -12,23 +12,23 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Vijay & Trisha - Wedding Invitation",
+  title: "Karthik & Shakti - Wedding Invitation",
   description:
-    "You are invited to celebrate the wedding of Vijay and Trisha on March 15th, 2026 in Chennai. Join us for a day filled with joy, love, and unforgettable moments.",
+    "You are invited to celebrate the wedding of Karthik and Shakti on March 15th, 2026 in Chennai. Join us for a day filled with joy, love, and unforgettable moments.",
   generator: "v0.app",
   keywords: [
     "wedding",
     "invitation",
     "celebrate",
     "marriage",
-    "vijay",
-    "trisha",
+    "karthik",
+    "shakti",
   ],
-  authors: [{ name: "Vijay & Trisha" }],
+  authors: [{ name: "Karthik & Shakti" }],
   icons: "/favicon.jpg", // ✅ single icon as a string
-  metadataBase: new URL("https://Vijay&TrishaWeddingInvitation.com"),
+  metadataBase: new URL("https://Karthik&ShaktiWeddingInvitation.com"),
   openGraph: {
-    title: "Vijay & Trisha - Wedding Invitation",
+    title: "Karthik & Shakti - Wedding Invitation",
     description: "Join us to celebrate our special day on March 15th, 2026",
     type: "website",
     images: [
