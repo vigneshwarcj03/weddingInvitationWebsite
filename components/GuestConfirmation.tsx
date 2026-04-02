@@ -127,14 +127,14 @@ export default function GuestConfirmation() {
                 exit={{ opacity: 0, y: -40 }}
               >
                 {/* Name */}
-                <label className="block text-sm mb-1 text-[#D4AF37]">
+                <label className="block text-l mb-1 text-white">
                   Your Name
                 </label>
                 <input
                   type="text"
                   name="name"
                   required
-                  placeholder="Your Name"
+                  placeholder="enter your name..."
                   value={formData.name}
                   onChange={handleChange}
                   className="w-full px-4 py-4 rounded-xl border border-[#D4AF37] bg-transparent text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
@@ -159,16 +159,16 @@ export default function GuestConfirmation() {
                 </div>
 
                 {/* Message */}
-                <label className="block text-sm mb-1 text-[#D4AF37]">
+                <label className="block text-l mb-1 text-white">
                   Your Message
                 </label>
                 <textarea
                   name="message"
                   rows={5}
-                  placeholder="Your Message"
+                  placeholder="write your wishes here..."
                   value={formData.message}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-[#D4AF37] bg-transparent text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                  className="w-full px-4 py-3 rounded-xl border border-[#D4AF37] bg-transparent text-white/10 placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
                 />
 
                 {/* Submit */}
@@ -176,7 +176,7 @@ export default function GuestConfirmation() {
                   type="submit"
                   disabled={loading}
                   whileHover={{ scale: 1.05 }}
-                  className="w-full py-3 bg-[#D4AF37] text-[#660033] font-semibold rounded-xl hover:opacity-90 transition-all"
+                  className="w-full py-3 bg-white text-[#660033] font-semibold rounded-xl hover:opacity-90 transition-all"
                 >
                   {loading ? "Sending..." : "Send Wishes"}
                 </motion.button>
