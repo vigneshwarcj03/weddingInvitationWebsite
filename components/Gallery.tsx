@@ -7,7 +7,6 @@ import { X } from "lucide-react";
 const GALLERY_SECTIONS = [
   { id: "engagement", name: "Engagement" },
   { id: "prewedding", name: "Pre-Wedding" },
-  { id: "wedding", name: "Wedding" },
   { id: "family", name: "Family" },
 ];
 
@@ -52,26 +51,7 @@ const galleryImages = {
       src: "/pre3.jfif",
     },
   ],
-  wedding: [
-    {
-      id: 7,
-      title: "Wedding Ritual",
-      alt: "Wedding photo 1",
-      src: "/wedding1.jfif",
-    },
-    {
-      id: 8,
-      title: "Bride & Groom",
-      alt: "Wedding photo 2",
-      src: "/wedding2.jfif",
-    },
-    {
-      id: 9,
-      title: "Sacred Vows",
-      alt: "Wedding photo 3",
-      src: "/wedding3.jfif",
-    },
-  ],
+
   family: [
     {
       id: 10,
@@ -175,7 +155,7 @@ export default function WeddingGallery() {
                   src={image.src}
                   alt={image.alt}
                   loading="lazy"
-                  className="w-full h-64 md:h-120 object-cover transition-all duration-700 group-hover:scale-110"
+                  className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
                 />
 
                 {/* soft overlay */}

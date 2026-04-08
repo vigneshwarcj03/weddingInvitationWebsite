@@ -18,11 +18,12 @@ export default function HeroSection({ guestName }: HeroSectionProps) {
       {/* Subtle background pattern */}
       <div className="absolute inset-0 opacity-[0.06] bg-[radial-gradient(circle_at_center,#D4AF37_1px,transparent_1px)] bg-[size:50px_50px]" />
 
-      <div className="absolute top-0 left-0 w-full z-10 flex justify-center">
+      {/* TopHero Overlay */}
+      <div className="absolute -top-5 z-20 flex justify-center w-full pointer-events-none">
         <Image
           src="/TopHero.png"
           alt="Top Decoration"
-          width={600}
+          width={500}
           height={200}
           className="w-auto h-auto object-contain"
           priority
@@ -86,7 +87,7 @@ export default function HeroSection({ guestName }: HeroSectionProps) {
               ease: "easeInOut",
             },
           }}
-          className="flex justify-center origin-top relative"
+          className="flex justify-center origin-top relative mt-20"
         >
           <Image
             src="/HeroSection_Image.png"
@@ -94,7 +95,7 @@ export default function HeroSection({ guestName }: HeroSectionProps) {
             width={240}
             height={240}
             priority
-            className="mx-auto drop-shadow-[0_20px_40px_rgba(0,0,0,0.25)]"
+            className="mx-auto drop-shadow-[0_20px_40px_rgba(0,0,0,0.25) ]"
           />
         </motion.div>
 

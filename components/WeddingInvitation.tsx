@@ -50,7 +50,8 @@ export default function WeddingInvitation({
   }, [guestName, currentGuest, updateGuestName]);
 
   if (isConfirmed) {
-    return <CelebrationScreen guestName={currentGuest} />;
+    // Celebration screen not implemented yet
+    return null;
   }
 
   if (showDoorIntro) {
@@ -99,10 +100,7 @@ export default function WeddingInvitation({
           className="py-12 md:py-20"
         >
           <div className="max-w-2xl mx-auto px-4">
-            <GuestConfirmation
-              guestName={currentGuest}
-              onConfirmation={confirmAttendance}
-            />
+            <GuestConfirmation guestName={currentGuest} />
           </div>
         </motion.section>
         <Footer />

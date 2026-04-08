@@ -15,7 +15,7 @@
 
 This project demonstrates a modern digital wedding invitation suitable for
 couples looking to send interactive, mobile-friendly invites. The sample
-site is configured for Vijay & Trisha's wedding (March 15, 2026) but can
+site is configured for Vijay & Trisha's wedding (May 15, 2026) but can
 be adapted for any event. Features include personalized greetings,
 animated countdowns, photo galleries, RSVP forms, and celebratory effects.
 
@@ -29,16 +29,14 @@ flowers, and confetti.
 
 - **Animated Intro** – Temple door opening using Framer Motion.
 - **Background Effects** – Continuous falling flowers animation.
+- **Background Music** – Optional wedding theme music with toggle control.
 - **Countdown Timer** – Live countdown to the wedding date.
 - **Personalization** – Query parameter support for guest names.
 - **Gallery** – Lightbox carousel of photos.
-- **RSVP & Confirmation** – Form with validation, API route, and optional
-  email notification.
-- **Celebration Screen** – Confetti and thank‑you message post‑RSVP.
+- **RSVP & Confirmation** – Form with validation, API route, and Telegram notification.
 - **Responsive & Accessible** – Mobile-first design with WCAG-friendly
   components using shadcn/ui (Radix primitives).
 - **Dark/Light themes** – Toggleable color schemes via `next-themes`.
-- **PDF Export** – Export invite as PDF using `html2pdf.js`.
 - **Analytics** – Vercel Analytics integration.
 
 ---
@@ -52,7 +50,7 @@ flowers, and confetti.
 - **shadcn/ui** (Radix UI) component library
 - **Zod + React Hook Form** for validation
 - Additional libs: `sonner`, `embla-carousel-react`, `recharts`, `emailjs-com`,
-  `@vercel/analytics`, `html2pdf.js`, `date-fns`, etc.
+  `@vercel/analytics`, `date-fns`, `canvas-confetti`, etc.
 
 ---
 
@@ -66,33 +64,48 @@ app/
   api/confirm-attendance/route.ts
   celebration/page.tsx
 components/
-  WeddingInvitation.tsx
-  TempleDoorIntro.tsx
-  HeroSection.tsx
-  LoveStory.tsx
+  BackgroundMusic.tsx
   CountdownTimer.tsx
-  WeddingDetails.tsx
+  FallingFlowers.tsx
+  Footer.tsx
   Gallery.tsx
   GuestConfirmation.tsx
-  CelebrationScreen.tsx
-  FallingFlowers.tsx
+  HeroSection.tsx
   LoadingScreen.tsx
+  LocationComponent.tsx
+  LoveStory.tsx
+  Reception.tsx
+  TempleDoorIntro.tsx
   theme-provider.tsx
-  ui/      shadcn/ui components
+  WeddingCeremony.tsx
+  WeddingInvitation.tsx
+  ui/      shadcn/ui components
 hooks/
-  useInvitation.ts
-  use-toast.ts
   use-mobile.ts
+  use-toast.ts
+  useInvitation.ts
 lib/
   utils.ts
 public/
-  Couples_1.jfif
   download (6).jfif
+  download (61).jfif
+  engagement1.jfif
+  engagement2.jfif
+  engagement3.jfif
+  fam1.jfif
+  fam2.jfif
+  fam3.jfif
+  pre1.jfif
+  pre2.jfif
+  pre3.jfif
+  wedding1.jfif
+  wedding2.jfif
+  wedding3.jfif
   music/
+    wedding-theme.mp3
 styles/
   globals.css
-bckup/           backup components
-components.json  shadcn/ui config
+components.json  shadcn/ui config
 package.json
 tsconfig.json
 next.config.mjs
@@ -168,7 +181,11 @@ pnpm lint
 Create a `.env.local` file in the project root with the following optional variables:
 
 ```ini
-# EmailJS Configuration (for sending confirmation emails)
+# Telegram Bot Configuration (for sending RSVP notifications)
+TELEGRAM_BOT_TOKEN=your_bot_token
+TELEGRAM_CHAT_ID=your_chat_id
+
+# EmailJS Configuration (for sending confirmation emails - optional)
 NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_service_id
 NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_template_id
 NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key
@@ -184,14 +201,15 @@ DATABASE_URL=your_database_connection_string
 Edit the following components to customize wedding information:
 
 - **HeroSection.tsx** – Couple names and greeting messages
-- **CountdownTimer.tsx** – Wedding date configuration (currently set to March 15, 2026)
-- **WeddingDetails.tsx** – Venue name, address, time, and description
+- **CountdownTimer.tsx** – Wedding date configuration (currently set to May 15, 2026)
+- **WeddingCeremony.tsx** – Ceremony details, venue, time
+- **Reception.tsx** – Reception details, venue, time
 - **Gallery.tsx** – Photo URLs and gallery images
 
 Example date configuration in CountdownTimer:
 
 ```typescript
-const weddingDate = new Date("2026-03-15T17:00:00+05:30").getTime();
+const weddingDate = new Date("2026-05-15T17:00:00+05:30").getTime();
 ```
 
 ### Theme Customization
@@ -288,7 +306,7 @@ Records guest attendance and RSVP information.
 **WeddingInvitation.tsx**
 
 - Main orchestrating component
-- Manages flow: Door intro → Hero → Love Story → Countdown → Details → Gallery → Confirm → Celebration
+- Manages flow: Door intro → Hero → Love Story → Countdown → Ceremony → Reception → Location → Gallery → Confirm
 - Passes guest name through the entire component tree
 
 **TempleDoorIntro.tsx**
@@ -309,17 +327,31 @@ Records guest attendance and RSVP information.
 - Updates every second
 - Animated progress visualization
 
+**WeddingCeremony.tsx**
+
+- Details about the wedding ceremony
+- Venue information and timing
+
+**Reception.tsx**
+
+- Details about the reception
+- Venue information and timing
+
+**LocationComponent.tsx**
+
+- Interactive map showing wedding venue
+- Embedded Google Maps
+
 **GuestConfirmation.tsx**
 
 - React Hook Form with Zod validation
 - Collects guest details for RSVP
 - Submits to `/api/confirm-attendance`
 
-**CelebrationScreen.tsx**
+**BackgroundMusic.tsx**
 
-- Post-RSVP celebration view
-- Confetti animation
-- Personalized thank you message
+- Optional background music player
+- Toggle control for wedding theme music
 
 ### UI Components Library
 
@@ -335,7 +367,20 @@ The `components/ui/` directory contains 27+ pre-built shadcn/ui components inclu
 
 ## 🔌 Integration Guide
 
-### EmailJS Setup
+### Telegram Bot Setup
+
+1. Create a bot with [@BotFather](https://t.me/botfather) on Telegram
+2. Get your bot token
+3. Create a private channel/group and add the bot as admin
+4. Get the chat ID (use @userinfobot or API calls)
+5. Add credentials to `.env.local`:
+   ```ini
+   TELEGRAM_BOT_TOKEN=your_bot_token
+   TELEGRAM_CHAT_ID=your_chat_id
+   ```
+6. RSVP submissions will be sent as formatted messages to your Telegram chat
+
+### EmailJS Setup (Optional)
 
 1. Sign up at [EmailJS](https://www.emailjs.com/)
 2. Create an email service and template
@@ -529,19 +574,20 @@ For support or questions, please contact the development team.
 
 For questions about this website or custom modifications, please reach out to the project maintainers.
 
-**Last Updated:** March 2026  
+**Last Updated:** April 2026  
 **Project Version:** 0.1.0
 
 ### Hard-coded Details
 
 Most wedding-specific data is defined in components:
 
-| File                               | What to change                              |
-| ---------------------------------- | ------------------------------------------- |
-| `components/CountdownTimer.tsx`    | `targetDate` constant (wedding date & time) |
-| `components/HeroSection.tsx`       | Couple names and greeting messages          |
-| `components/WeddingDetails.tsx`    | Venue name, address, date, timings          |
-| `components/GuestConfirmation.tsx` | Contact info, form copy, labels             |
+| File                               | What to change                          |
+| ---------------------------------- | --------------------------------------- |
+| `components/CountdownTimer.tsx`    | `target` prop (wedding date & time)     |
+| `components/HeroSection.tsx`       | Couple names and greeting messages      |
+| `components/WeddingCeremony.tsx`   | Ceremony venue, address, date, timings  |
+| `components/Reception.tsx`         | Reception venue, address, date, timings |
+| `components/GuestConfirmation.tsx` | Contact info, form copy, labels         |
 
 Colors and fonts are set in `app/globals.css`:
 
@@ -611,8 +657,6 @@ This is a personal project created for Vijay & Trisha's wedding invitation. Cont
 4. Push to your fork: `git push origin feature/my-improvement`.
 5. Open a pull request describing your changes in detail.
 
----
-
 ## 📄 License
 
 MIT License – see the [LICENSE](LICENSE) file for details.
@@ -624,29 +668,6 @@ MIT License – see the [LICENSE](LICENSE) file for details.
 - **Desktop**: Chrome/Edge (latest), Firefox (latest), Safari (latest)
 - **Mobile**: iOS Safari, Chrome Mobile (latest versions)
 - Full responsive design support across all modern browsers
-
-## 🚀 Deployment
-
-### Deploy to Vercel (Recommended)
-
-1. Push your project to GitHub
-2. Connect your repository to [Vercel](https://vercel.com)
-3. Vercel automatically detects Next.js and deploys with optimal settings
-4. Your site will be live with a custom domain option
-
-### Environment Variables on Vercel
-
-In your Vercel project settings:
-
-- Navigate to Settings → Environment Variables
-- Add `NEXT_PUBLIC_EMAILJS_*` and `DATABASE_URL` if using services
-- Redeploy to apply changes
-
-### Other Hosting Options
-
-- **Netlify**: Deploy Next.js with `next build && next export`
-- **AWS**: Use AWS Amplify for automated deployments
-- **Self-Hosted**: Run on any Node.js server with `pnpm build && pnpm start`
 
 ## 🆘 Support
 

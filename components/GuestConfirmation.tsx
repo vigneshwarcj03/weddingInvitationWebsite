@@ -14,9 +14,17 @@ interface FormData {
 
 const emojis = ["😍", "❤️", "👍", "🍻"];
 
-export default function GuestConfirmation() {
+interface GuestConfirmationProps {
+  guestName?: string;
+  onConfirmation?: () => void;
+}
+
+export default function GuestConfirmation({
+  guestName,
+  onConfirmation,
+}: GuestConfirmationProps) {
   const [formData, setFormData] = useState<FormData>({
-    name: "",
+    name: guestName || "",
     message: "",
     emoji: "😍",
   });
@@ -76,6 +84,11 @@ export default function GuestConfirmation() {
     setLoading(false);
     setSubmitted(true);
     fireConfetti();
+
+    // Call the confirmation callback if provided
+    if (onConfirmation) {
+      onConfirmation();
+    }
   };
 
   return (
